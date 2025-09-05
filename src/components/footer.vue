@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <p>© 2025 Ani-Box. All rights reserved.</p>
+    <p>© 2025 <a href="https://github.com/vedokoush/ani-box" target="_blank">Ani-Box</a>. All rights reserved.</p>
   </footer>
 </template>
 
@@ -8,7 +8,7 @@
 
 <style scoped>
 .footer {
-  background: #333;
+  background: #222;
   color: white;
   text-align: center;
   padding: 1rem;
