@@ -25,6 +25,17 @@ import Footer from '../components/Footer.vue'
 .main {
   display: flex;
   flex: 1;
+  padding-top: 50px;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  opacity: 0.8;
+  background: #030e16;
 }
 
 .content {

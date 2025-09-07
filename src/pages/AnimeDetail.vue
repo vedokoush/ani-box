@@ -119,16 +119,15 @@ onMounted(async () => {
 }
 
 .banner-img {
-  width: 55%;
+  width: 100%;
   height: 100%;
   object-fit: cover;
 }
 .anime-card {
   display: flex;
   gap: 30px;
-  max-width: 4000px;
-  margin: -100px auto 50px auto;
-  //background: #030e16;
+  max-width: 1200px;
+  margin: -100px 400px 50px auto;
   padding: 30px;
   position: relative;
   z-index: 100;
@@ -218,21 +217,22 @@ onMounted(async () => {
 .scroll-container {
   position: relative;
   display: flex;
-  overflow: hidden;
   align-items: center;
-  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
 }
 
 .cast-list {
   display: flex;
   overflow-x: auto;
   scroll-behavior: smooth;
-  gap: 20px;
+  gap: 16px;
   padding: 10px 0;
-  width: 100%;
+  max-width: 50%;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
 .cast-list::-webkit-scrollbar {
   display: none;
 }
