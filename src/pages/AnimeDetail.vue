@@ -5,6 +5,7 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 const anime = ref<any>(null)
 const cast = ref<any[]>([])
+const banner = ref<string | null>(null)
 
 const castListRef = ref<HTMLElement | null>(null)
 
@@ -25,88 +26,112 @@ onMounted(async () => {
   const resCast = await fetch(`http://localhost:3000/anime/${id}/characters`)
   const dataCast = await resCast.json()
   cast.value = dataCast.data
+
+  const resBanner = await fetch(`http://localhost:3000/anime/${id}/banner`)
+  const dataBanner = await resBanner.json()
+  banner.value = dataBanner.data?.Media?.bannerImage || null
 })
 </script>
 
 <template>
-  <div v-if="anime" class="anime-card">
-    <div class="anime-card-left">
-      <img :src="anime.images.jpg.large_image_url" :alt="anime.title" class="anime-poster"/>
+  <div>
+    <div class="anime-banner" v-if="banner">
+      <img :src="banner" alt="banner" class="banner-img"/>
     </div>
 
-    <div class="anime-card-right">
-      <h1 class="anime-title">{{ anime.title_english }}</h1>
-
-      <div class="anime-meta">
-        <span>{{ anime.duration || 'Unknown duration' }}</span>
-        <span>❤ {{ anime.score || 'N/A' }}%</span>
-        <span>{{ anime.type || 'Animation' }}</span>
-        <span>{{ anime.year || 'N/A' }}</span>
-        <p>{{ anime.genres?.map(g => g.name).join(' · ') || 'N/A' }}</p>
+    <div v-if="anime" class="anime-card">
+      <div class="anime-card-left">
+        <img :src="anime.images.jpg.large_image_url" :alt="anime.title" class="anime-poster"/>
       </div>
 
-      <div class="anime-additional">
-        <span><strong>Content Advisory: </strong>{{ anime.rating || 'N/A'}}</span>
-        <span>Status: {{ anime.status || 'Unknown' }}</span>
-        <span><strong>Aired: </strong>{{ anime.aired.string }}</span>
-      </div>
-      <div class="btn">
-        <button class="watch-btn">▶ Watch Now</button>
-        <button class="add-to-list">Add to List</button>
-      </div>
+      <div class="anime-card-right">
+        <h1 class="anime-title">{{ anime.title_english || anime.title }}</h1>
 
-      <div class="content-container">
-        <div class="content-left">
-          <p class="anime-synopsis">{{ anime.synopsis }}</p>
+        <div class="anime-meta">
+          <span>{{ anime.duration || 'Unknown duration' }}</span>
+          <span>❤ {{ anime.score || 'N/A' }}%</span>
+          <span>{{ anime.type || 'Animation' }}</span>
+          <span>{{ anime.year || 'N/A' }}</span>
+          <p>{{ anime.genres?.map(g => g.name).join(' · ') || 'N/A' }}</p>
+        </div>
 
-          <div class="cast">
-            <div class="scroll-container" v-if="cast.length">
-              <button class="scroll-btn left" @click="scrollLeft(castListRef)">‹</button>
-              <div class="cast-list" ref="castListRef">
-                <div
-                  v-for="c in cast"
-                  :key="c.character.mal_id"
-                  class="cast-item"
-                >
-                  <div class="cast-img">
-                    <img
-                      :src="c.character.images.jpg.image_url"
-                      :alt="c.character.name"
-                      class="character-img"
-                    />
-                    <img
-                      :src="c.voice_actors[0]?.person.images.jpg.image_url"
-                      :alt="c.voice_actors[0]?.person.name"
-                      class="voice-img"
-                    />
+        <div class="anime-additional">
+          <span><strong>Content Advisory: </strong>{{ anime.rating || 'N/A'}}</span>
+          <span>Status: {{ anime.status || 'Unknown' }}</span>
+          <span><strong>Aired: </strong>{{ anime.aired.string }}</span>
+        </div>
+
+        <div class="btn">
+          <button class="watch-btn">▶ Watch Now</button>
+          <button class="add-to-list">+ Add to List</button>
+        </div>
+
+        <div class="content-container">
+          <div class="content-left">
+            <p class="anime-synopsis">{{ anime.synopsis }}</p>
+
+            <div class="cast">
+              <div class="scroll-container" v-if="cast.length">
+                <button class="scroll-btn left" @click="scrollLeft(castListRef)">‹</button>
+                <div class="cast-list" ref="castListRef">
+                  <div
+                    v-for="c in cast"
+                    :key="c.character.mal_id"
+                    class="cast-item"
+                  >
+                    <div class="cast-img">
+                      <img
+                        :src="c.character.images.jpg.image_url"
+                        :alt="c.character.name"
+                        class="character-img"
+                      />
+                      <img
+                        :src="c.voice_actors[0]?.person.images.jpg.image_url"
+                        :alt="c.voice_actors[0]?.person.name"
+                        class="voice-img"
+                      />
+                    </div>
+                    <p class="cast-name">
+                      <span class="character-name">{{ c.character.name }}</span>
+                      <span class="voice-name">{{ c.voice_actors[0]?.person.name }}</span>
+                    </p>
                   </div>
-                  <p class="cast-name">
-                    <span class="character-name">{{ c.character.name }}</span>
-                    <span class="voice-name">{{ c.voice_actors[0]?.person.name }}</span>
-                  </p>
                 </div>
+                <button class="scroll-btn right" @click="scrollRight(castListRef)">›</button>
               </div>
-              <button class="scroll-btn right" @click="scrollRight(castListRef)">›</button>
+              <p v-else>Loading cast...</p>
             </div>
-            <p v-else>Loading cast...</p>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <p v-else class="loading">Loading...</p>
+    <p v-else class="loading">Loading...</p>
+  </div>
 </template>
 
 <style scoped>
+.anime-banner {
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-img {
+  width: 55%;
+  height: 100%;
+  object-fit: cover;
+}
 .anime-card {
   display: flex;
   gap: 30px;
   max-width: 4000px;
-  margin: 50px auto;
-  background: #030e16;
-  border-radius: 20px;
+  margin: -100px auto 50px auto;
+  //background: #030e16;
   padding: 30px;
+  position: relative;
+  z-index: 100;
   color: #e0e0e0;
 }
 
@@ -157,23 +182,6 @@ onMounted(async () => {
   margin-bottom: 10px;
   color: #a0a0a0;
 }
-
-.anime-details {
-  margin-top: 10px;
-  margin-left: 100px;
-  color: #c0c0c0;
-  font-size: 0.9rem;
-  line-height: 1.5;
-}
-
-.anime-details p {
-  margin: 6px 0;
-}
-
-.anime-details strong {
-  color: white;
-}
-
 
 .anime-synopsis {
   margin: 10px 0 20px 0;
