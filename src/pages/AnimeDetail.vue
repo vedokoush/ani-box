@@ -20,20 +20,20 @@ onMounted(async () => {
     </div>
 
     <div class="anime-card-right">
-      <h1 class="anime-title">{{ anime.title }}</h1>
+      <h1 class="anime-title">{{ anime.title_english }}</h1>
 
       <div class="anime-meta">
         <span>{{ anime.duration || 'Unknown duration' }}</span>
         <span>❤ {{ anime.score || 'N/A' }}%</span>
         <span>{{ anime.type || 'Animation' }}</span>
         <span>{{ anime.year || 'N/A' }}</span>
+        <p>{{ anime.genres?.map(g => g.name).join(' · ') || 'N/A' }}</p>
       </div>
 
       <div class="anime-additional">
-        <span>Language: {{ anime.language || 'N/A' }}</span>
-        <span>Network: {{ anime.network || 'N/A' }}</span>
-        <span>Resolution: {{ anime.resolution || 'HD' }}</span>
+        <span><strong>Content Advisory: </strong>{{ anime.rating || 'N/A'}}</span>
         <span>Status: {{ anime.status || 'Unknown' }}</span>
+        <span><strong>Aired: </strong>{{ anime.aired.string }}</span>
       </div>
 
       <div class="btn">
@@ -47,17 +47,7 @@ onMounted(async () => {
         <div class="content-left">
           <p class="anime-synopsis">{{ anime.synopsis }}</p>
         </div>
-
-        <div class="content-right">
-          <div class="anime-genres">
-            <div class="genres">Genres: </div>
-            <span v-for="genre in anime.genres" :key="genre.mal_id" class="genre-tag">{{ genre.name }}</span>
-          </div>
-        </div>
       </div>
-
-
-
     </div>
   </div>
 
@@ -68,7 +58,7 @@ onMounted(async () => {
 .anime-card {
   display: flex;
   gap: 30px;
-  max-width: 1600px;
+  max-width: 4000px;
   margin: 50px auto;
   background: #030e16;
   border-radius: 20px;
@@ -82,10 +72,12 @@ onMounted(async () => {
   flex-wrap: wrap;
 }
 .content-left {
-  flex: 1;
+  flex: 1 1 100%;
+  max-width: 100%;
 }
 .content-right {
   flex: 1;
+  max-width: 1600px;
 }
 
 .anime-card-left {
@@ -121,23 +113,28 @@ onMounted(async () => {
   color: #a0a0a0;
 }
 
-.anime-genres {
-  margin: 10px 0 15px 0;
+.anime-details {
+  margin-top: 10px;
+  margin-left: 100px;
+  color: #c0c0c0;
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 
-.genre-tag {
-  display: inline-block;
-  color: white;
-  padding: 5px 15px;
-  font-size: 0.85rem;
-  margin: 0 8px 8px 0;
+.anime-details p {
+  margin: 6px 0;
 }
+
+.anime-details strong {
+  color: white;
+}
+
 
 .anime-synopsis {
   margin: 10px 0 20px 0;
   line-height: 1.6;
-  max-width: 500px;
-  color: #c0c0c0;
+  max-width: 1000px;
+  color: white;
 }
 
 .btn {
