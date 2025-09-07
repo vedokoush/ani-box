@@ -6,7 +6,7 @@ const anime = ref(null)
 async function fetchAnime() {
   const res = await fetch("http://localhost:3000/anime/1") // gọi backend
   const data = await res.json()
-  anime.value = data.data // Jikan API trả về { data: {...} }
+  anime.value = data.data
 }
 
 onMounted(fetchAnime)

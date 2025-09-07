@@ -21,8 +21,8 @@ import Logo from '@/assets/anibox.png'
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #222;
-  color: white;
+  background: #030e16;
+  color: #ff1b75;
   padding: 0.75rem 1.5rem;
 }
 
@@ -48,7 +48,7 @@ import Logo from '@/assets/anibox.png'
 }
 
 .links a {
-  color: white;
+  color: #ff1b75;
   text-decoration: none;
   transition: color 0.2s ease;
 }

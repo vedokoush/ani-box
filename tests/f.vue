@@ -122,7 +122,7 @@ function scrollRight(refEl: HTMLElement | null) {
 .anime-card {
   flex: 0 0 auto;
   width: 280px;
-  background: #222;
+  //background: #222;
   color: white;
   padding: 10px;
   border-radius: 8px;
