@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import Recommendation from '@/components/recommendation.vue'
 
 const route = useRoute()
 const anime = ref<any>(null)
@@ -105,8 +106,11 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-
     <p v-else class="loading">Loading...</p>
+    <div class="anime-episode">
+
+    </div>
+    <Recommendation />
   </div>
 </template>
 

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../pages/home.vue'
 import AnimeDetail from '../pages/AnimeDetail.vue'
+import Search from '../pages/Search.vue'
 
 const routes = [
   {
@@ -13,6 +14,10 @@ const routes = [
     name: 'AnimeDetail',
     component: AnimeDetail,
     props: true,
+  },
+  { path: '/search',
+    name: 'Search',
+    component: Search
   }
 ]
 

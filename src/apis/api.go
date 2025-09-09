@@ -107,6 +107,26 @@ func getAnimeBanner(r *gin.Engine) {
   })
 }
 
+func searchAnime(r *gin.Engine) {
+	r.GET("/anime/search", func(c *gin.Context) {
+		q := c.Query("q")
+		if q == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "missing query"})
+			return
+		}
+
+		resp, err := http.Get("https://api.jikan.moe/v4/anime?q=" + q)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		defer resp.Body.Close()
+
+		body, _ := io.ReadAll(resp.Body)
+		c.Data(http.StatusOK, "application/json", body)
+	})
+}
+
 func main() {
 	r := gin.Default()
 	r.Use(cors.Default())
@@ -117,6 +137,7 @@ func main() {
 	getAnimeThemes(r)
 	getAnimeCharacters(r)
 	getAnimeBanner(r)
+	searchAnime(r)
 
 	r.Run(":3000")
 }
