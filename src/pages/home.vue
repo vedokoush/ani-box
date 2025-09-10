@@ -4,6 +4,7 @@ import { ref, onMounted } from 'vue'
 const airingAnimes = ref<any[]>([])
 const topAnimes = ref<any[]>([])
 
+
 async function fetchAiring() {
   const res = await fetch("http://localhost:3000/anime/now")
   const data = await res.json()
@@ -47,8 +48,8 @@ function scrollRight(refEl: HTMLElement | null) {
             :to="`/anime/${anime.mal_id}`"
             class="anime-card"
           >
-            <img :src="anime.images.jpg.large_image_url" :alt="anime.title" />
-            <h3>{{ anime.title }}</h3>
+            <img :src="anime.images.jpg.large_image_url" :alt="anime.title_english" />
+            <h3>{{ anime.title_english }}</h3>
           </router-link>
         </div>
         <button class="scroll-btn right" @click="scrollRight(airingListRef)">›</button>
@@ -67,8 +68,8 @@ function scrollRight(refEl: HTMLElement | null) {
             :to="`/anime/${anime.mal_id}`"
             class="anime-card"
           >
-            <img :src="anime.images.jpg.large_image_url" :alt="anime.title" />
-            <h3>{{ anime.title }}</h3>
+            <img :src="anime.images.jpg.large_image_url" :alt="anime.title_english" />
+            <h3>{{ anime.title_english }}</h3>
             <p>Score: {{ anime.score }}</p>
           </router-link>
         </div>
@@ -109,7 +110,7 @@ function scrollRight(refEl: HTMLElement | null) {
   overflow-x: auto;
   scroll-behavior: smooth;
   gap: 16px;
-  padding: 10px 0;
+  padding: 10px 20px;
   width: 100%;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -121,26 +122,23 @@ function scrollRight(refEl: HTMLElement | null) {
 
 .anime-card {
   flex: 0 0 auto;
-  width: 280px;
-  background: #222;
+  width: 340px;
   color: white;
   padding: 10px;
   border-radius: 8px;
-  text-align: center;
-  transition: transform 0.2s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
   text-decoration: none;
 }
 
 .anime-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 
 .anime-card img {
   width: 100%;
-  height: 350px;
-  object-fit: cover;
-  //border-radius: 6px;
-  margin-bottom: 10px;
+  height: auto;
+  object-fit: contain;
 }
 
 .anime-card h3 {

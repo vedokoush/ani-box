@@ -58,6 +58,11 @@ async function onSearch() {
   background: #030e16;
   color: #ff1b75;
   padding: 0.75rem 1.5rem;
+  transition: opacity 0.8s ease;
+}
+
+.navbar:hover {
+  opacity: 1;
 }
 
 .logo-section {
@@ -117,15 +122,5 @@ async function onSearch() {
   outline: none;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   width: 180px;
-}
-
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.3s ease;
-}
-.slide-enter-from,
-.slide-leave-to {
-  opacity: 0;
-  transform: translateX(20px);
 }
 </style>
