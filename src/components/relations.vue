@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import {ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const recommendations = ref<any[]>([])
-const recListRef = ref<HTMLElement | null>(null)
+const relations = ref<any[]>([])
+const relListRef = ref<HTMLElement | null>(null)
 
 onMounted(async () => {
   const id = route.params.id
-  const resRec = await fetch(`http://localhost:3000/anime/${id}/recommendations`)
-  const dataRec = await resRec.json()
-  recommendations.value = dataRec.data || []
+  const resRel = await fetch(`http://localhost:3000/anime/${id}/relations`)
+  const dataRel = await resRel.json()
+  relations.value = dataRel.data || []
 })
 
 function scrollLeft(refEl: HTMLElement | null) {
@@ -20,42 +20,44 @@ function scrollLeft(refEl: HTMLElement | null) {
 function scrollRight(refEl: HTMLElement | null) {
   if (refEl) refEl.scrollBy({ left: 400, behavior: 'smooth' })
 }
+
 </script>
 
 <template>
-  <div class="more-like-this">
-    <h2 v-if="recommendations.length">More Like This</h2>
-    <div class="scroll-container" v-if="recommendations.length">
-      <button class="scroll-btn left" @click="scrollLeft(recListRef)">‹</button>
+  <div class="relations">
+    <h2 v-if="relations.length">Related to</h2>
+    <div class="scroll-container" v-if="relations.length">
+      <button class="scroll-btn left" @click="scrollLeft(relListRef)">‹</button>
       <div class="recommend-list" ref="recListRef">
         <router-link
-          v-for="rec in recommendations"
-          :key="rec.entry.mal_id"
-          :to="`/anime/${rec.entry.mal_id}`"
-          class="recommend-item"
+          v-for="rel in relations"
+          :key="rel.entry.mal_id"
+          :to="`/anime/${rel.entry.mal_id}`"
+          class="related-item"
         >
           <img
-            :src="rec.entry.images.jpg.large_image_url"
-            :alt="rec.entry.title"
-            class="recommend-img"
+            :src="rel.entry.images.jpg.large_image_url"
+            :alt="rel.entry.name"
+            class="related-img"
           />
-          <p class="recommend-title">{{ rec.entry.title }}</p>
+          <p class="related-title">{{ rel.entry.mal_id }}</p>
         </router-link>
       </div>
-      <button class="scroll-btn right" @click="scrollRight(recListRef)">›</button>
+      <button class="scroll-btn right" @click="scrollRight(relListRef)">›</button>
     </div>
   </div>
 </template>
 
 <style scoped>
-.more-like-this {
+
+.relations {
   max-width: 1800px;
   margin: 40px auto;
   padding: 0 20px;
   color: white;
 }
 
-.more-like-this h2 {
+.relations h2 {
   margin-bottom: 16px;
   font-weight: bold;
 }
@@ -82,7 +84,7 @@ function scrollRight(refEl: HTMLElement | null) {
   display: none;
 }
 
-.recommend-item {
+.related-item {
   flex: 0 0 auto;
   width: 220px;
   color: white;
@@ -91,19 +93,19 @@ function scrollRight(refEl: HTMLElement | null) {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   text-decoration: none;
 }
-.recommend-item:hover {
+.related-item:hover {
   transform: translateY(-6px) scale(1.03);
   box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 
-.recommend-img {
+.related-img {
   width: 100%;
   height: 300px;
   object-fit: cover;
   border-radius: 6px;
 }
 
-.recommend-title {
+.related-title {
   font-size: 0.9rem;
   line-height: 1.3;
   margin-top: 8px;
@@ -142,3 +144,4 @@ function scrollRight(refEl: HTMLElement | null) {
   right: 0;
 }
 </style>
+

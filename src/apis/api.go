@@ -142,6 +142,21 @@ func getAnimeRecommendations(r *gin.Engine) {
 	})
 }
 
+func getAnimeRelations(r *gin.Engine) {
+	r.GET("/anime/:id/relations", func(c *gin.Context) {
+	    id := c.Param("id")
+		resp, err := http.Get("https://api.jikan.moe/v4/anime/" + id + "/relations")
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		defer resp.Body.Close()
+
+		body, _ := io.ReadAll(resp.Body)
+		c.Data(http.StatusOK, "application/json", body)
+	})
+}
+
 func main() {
 	r := gin.Default()
 	r.Use(cors.Default())
@@ -154,6 +169,7 @@ func main() {
 	getAnimeBanner(r)
 	searchAnime(r)
 	getAnimeRecommendations(r);
+	getAnimeRelations(r);
 
 	r.Run(":3000")
 }

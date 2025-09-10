@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -13,26 +13,22 @@ async function fetchSearch(q: string) {
 }
 
 function sortedResults() {
-  if (sortBy.value === 'rank') {
-    return [...results.value].sort((a, b) => (a.rank || 999999) - (b.rank || 999999))
+  switch (sortBy.value) {
+    case 'rank':
+      return [...results.value].sort((a, b) => (a.rank || 999999) - (b.rank || 999999))
+    case 'favorites':
+      return [...results.value].sort((a, b) => (b.favorites || 0) - (a.favorites || 0))
+    case 'members':
+      return [...results.value].sort((a, b) => (b.members || 0) - (a.members || 0))
+    default:
+      return results.value
   }
-  if (sortBy.value === 'favorites') {
-    return [...results.value].sort((a, b) => (b.favorites || 0) - (a.favorites || 0))
-  }
-  if (sortBy.value === 'members') {
-    return [...results.value].sort((a, b) => (b.members || 0) - (a.members || 0))
-  }
-  return results.value
 }
 
 onMounted(() => {
   if (route.query.q) {
     fetchSearch(route.query.q as string)
   }
-})
-
-watch(() => route.query.q, (newQ) => {
-  if (newQ) fetchSearch(newQ as string)
 })
 </script>
 
@@ -55,21 +51,14 @@ watch(() => route.query.q, (newQ) => {
         <router-link :to="`/anime/${anime.mal_id}`">
           <img :src="anime.images.jpg.image_url" :alt="anime.title" />
           <h3>{{ anime.title }}</h3>
-          <p>Rank: {{ anime.rank ?? 'N/A' }} | Favorites: {{ anime.favorites ?? 0 }} | ID: {{ anime.mal_id ?? 0}}</p>
+          <p>
+            Rank: {{ anime.rank ?? 'N/A' }} |
+            Favorites: {{ anime.favorites ?? 0 }} |
+            ID: {{ anime.mal_id ?? 0 }}
+          </p>
         </router-link>
       </div>
     </div>
     <p v-else>No results found</p>
   </div>
 </template>
-
-<style scoped>
-.sort-bar {
-  margin-bottom: 1rem;
-  color: white;
-}
-.sort-bar select {
-  padding: 4px 8px;
-  border-radius: 6px;
-}
-</style>

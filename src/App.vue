@@ -1,6 +1,6 @@
 <template>
   <MainLayout>
-    <router-view />
+    <router-view :key="$route.params.id" />
   </MainLayout>
 </template>
 

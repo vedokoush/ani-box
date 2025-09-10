@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import Recommendation from '@/components/recommendation.vue'
+import Relations from '@/components/relations.vue'
 
 const route = useRoute()
 const anime = ref<any>(null)
@@ -33,10 +34,6 @@ onMounted(async () => {
   const resBanner = await fetch(`http://localhost:3000/anime/${id}/banner`)
   const dataBanner = await resBanner.json()
   banner.value = dataBanner.data?.Media?.bannerImage || null
-
-  // const resRec = await fetch(`http://localhost:3000/anime/${id}/recommendations`)
-  // const dataRec = await resRec.json()
-  // recommendations.value = dataRec.data || []
 })
 </script>
 
@@ -117,6 +114,7 @@ onMounted(async () => {
 
     </div>
     <Recommendation />
+<!--    <Relations />-->
   </div>
 </template>
 
@@ -153,10 +151,6 @@ onMounted(async () => {
   flex: 1 1 100%;
   max-width: 100%;
   overflow-x: hidden;
-}
-.content-right {
-  flex: 1;
-  max-width: 1600px;
 }
 
 .anime-card-left {
