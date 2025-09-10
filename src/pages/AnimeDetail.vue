@@ -116,24 +116,7 @@ onMounted(async () => {
     <div class="anime-episode">
 
     </div>
-<!--    <Recommendation />-->
-    <div class="more-like-this" v-if="recommendations.length">
-      <h2>More like this</h2>
-      <div class="recommend-list">
-        <div
-          v-for="rec in recommendations"
-          :key="rec.entry.mal_id"
-          class="recommend-item"
-        >
-          <img
-            :src="rec.entry.images.jpg.large_image_url"
-            :alt="rec.entry.title"
-            class="recommend-img"
-          />
-          <p class="recommend-title">{{ rec.entry.title }}</p>
-        </div>
-      </div>
-    </div>
+    <Recommendation />
   </div>
 </template>
 
@@ -154,8 +137,8 @@ onMounted(async () => {
   display: flex;
   gap: 30px;
   max-width: 1200px;
-  margin: -100px 400px 50px auto;
-  padding: 30px;
+  margin: -100px 50px auto;
+  padding: 30px 40px;
   position: relative;
   z-index: 100;
   color: #e0e0e0;
@@ -268,30 +251,6 @@ onMounted(async () => {
   font-size: 1.5rem;
   margin-bottom: 20px;
   color: #fff;
-}
-
-.recommend-list {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.recommend-item {
-  width: 160px;
-  text-align: center;
-  color: #ccc;
-}
-
-.recommend-img {
-  width: 100%;
-  border-radius: 8px;
-  object-fit: cover;
-  margin-bottom: 10px;
-}
-
-.recommend-title {
-  font-size: 0.9rem;
-  line-height: 1.3;
 }
 
 .cast-list::-webkit-scrollbar {
