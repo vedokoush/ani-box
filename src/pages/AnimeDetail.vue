@@ -77,28 +77,30 @@ onMounted(async () => {
             <div class="cast">
               <div class="scroll-container" v-if="cast.length">
                 <button class="scroll-btn left" @click="scrollLeft(castListRef)">‹</button>
-                <div class="cast-list" ref="castListRef">
-                  <div
-                    v-for="c in cast"
-                    :key="c.character.mal_id"
-                    class="cast-item"
-                  >
-                    <div class="cast-img">
-                      <img
-                        :src="c.character.images.jpg.image_url"
-                        :alt="c.character.name"
-                        class="character-img"
-                      />
-                      <img
-                        :src="c.voice_actors[0]?.person.images.jpg.image_url"
-                        :alt="c.voice_actors[0]?.person.name"
-                        class="voice-img"
-                      />
+                <div class="cast-wrapper">
+                  <div class="cast-list" ref="castListRef">
+                    <div
+                      v-for="c in cast"
+                      :key="c.character.mal_id"
+                      class="cast-item"
+                    >
+                      <div class="cast-img">
+                        <img
+                          :src="c.character.images.jpg.image_url"
+                          :alt="c.character.name"
+                          class="character-img"
+                        />
+                        <img
+                          :src="c.voice_actors[0]?.person.images.jpg.image_url"
+                          :alt="c.voice_actors[0]?.person.name"
+                          class="voice-img"
+                        />
+                      </div>
+                      <p class="cast-name">
+                        <span class="character-name">{{ c.character.name }}</span>
+                        <span class="voice-name">{{ c.voice_actors[0]?.person.name }}</span>
+                      </p>
                     </div>
-                    <p class="cast-name">
-                      <span class="character-name">{{ c.character.name }}</span>
-                      <span class="voice-name">{{ c.voice_actors[0]?.person.name }}</span>
-                    </p>
                   </div>
                 </div>
                 <button class="scroll-btn right" @click="scrollRight(castListRef)">›</button>
@@ -119,6 +121,13 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+
+.cast-wrapper {
+  width: 80%;
+  overflow-x: hidden;
+  padding: 0 20px;
+}
+
 .anime-banner {
   width: 100%;
   height: 300px;
@@ -232,10 +241,21 @@ onMounted(async () => {
   scroll-behavior: smooth;
   gap: 16px;
   padding: 10px 0;
-  max-width: 50%;
+  width: 100%;
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+
+.cast-list::-webkit-scrollbar {
+  display: none;
+}
+
+.cast-item {
+  flex: 0 0 auto;
+  text-align: center;
+  width: 120px;
+}
+
 
 .cast-list::-webkit-scrollbar {
   display: none;
