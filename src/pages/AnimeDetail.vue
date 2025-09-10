@@ -129,23 +129,45 @@ onMounted(async () => {
 }
 
 .anime-banner {
-  width: 100%;
-  height: 300px;
-  overflow: hidden;
   position: relative;
+  width: 100%;
+  height: 450px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 1);
 }
 
 .banner-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+  filter: brightness(0.9) contrast(1.05);
 }
+
+.anime-banner::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  background: linear-gradient(
+    to bottom,
+    rgba(3,14,22,0) 0%,
+    rgba(3,14,22,0.6) 40%,
+    rgba(3,14,22,0.9) 80%,
+    rgba(3,14,22,1) 100%
+  );
+  pointer-events: none;
+}
+
+
 .anime-card {
   display: flex;
   gap: 30px;
   max-width: 1200px;
-  margin: -100px 50px auto;
-  padding: 30px 40px;
+  margin: -200px 50px auto;
+  padding: 0 20px 30px 10px;
   position: relative;
   z-index: 100;
   color: #e0e0e0;
@@ -184,6 +206,10 @@ onMounted(async () => {
   font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 10px;
+}
+
+.anime-title h1 {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
 }
 
 .anime-meta, .anime-additional {

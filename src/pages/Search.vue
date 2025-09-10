@@ -6,10 +6,29 @@ const route = useRoute()
 const results = ref<any[]>([])
 const sortBy = ref<'default' | 'rank' | 'favorites' | 'members'>('default')
 
+function matchesQuery(anime: any, q: string) {
+  if (!q) return true
+  q = q.toLowerCase()
+  return (
+    anime.title?.toLowerCase().includes(q) ||
+    anime.title_english?.toLowerCase().includes(q) ||
+    anime.title_japanese?.toLowerCase().includes(q) ||
+    (anime.title_synonyms || []).some((syn: string) => syn?.toLowerCase().includes(q))
+  )
+}
+
 async function fetchSearch(q: string) {
-  const res = await fetch(`http://localhost:3000/anime/search?q=${encodeURIComponent(q)}`)
-  const data = await res.json()
-  results.value = data.data || []
+  try {
+    const res = await fetch(
+      `http://localhost:3000/anime/search?q=${encodeURIComponent(q)}`
+    )
+    const data = await res.json()
+    const rawResults = data.data || []
+    results.value = rawResults.filter((anime: any) => matchesQuery(anime, q))
+  } catch (err) {
+    console.error('Search error:', err)
+    results.value = []
+  }
 }
 
 function sortedResults() {
@@ -47,14 +66,18 @@ onMounted(() => {
     </div>
 
     <div v-if="sortedResults().length">
-      <div v-for="anime in sortedResults()" :key="anime.mal_id" class="anime-card">
+      <div
+        v-for="anime in sortedResults()"
+        :key="anime.mal_id"
+        class="anime-card"
+      >
         <router-link :to="`/anime/${anime.mal_id}`">
           <img :src="anime.images.jpg.image_url" :alt="anime.title" />
-          <h3>{{ anime.title }}</h3>
+          <h3>{{ anime.title_english || anime.title }}</h3>
           <p>
             Rank: {{ anime.rank ?? 'N/A' }} |
             Favorites: {{ anime.favorites ?? 0 }} |
-            ID: {{ anime.mal_id ?? 0 }}
+            Members: {{ anime.members ?? 0 }}
           </p>
         </router-link>
       </div>
