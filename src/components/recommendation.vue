@@ -8,7 +8,7 @@ const recListRef = ref<HTMLElement | null>(null)
 
 onMounted(async () => {
   const id = route.params.id
-  const resRec = await fetch(`http://172.16.22.56:3000/anime/${id}/recommendations`)
+  const resRec = await fetch(`http://localhost:3000/anime/${id}/recommendations`)
   const dataRec = await resRec.json()
   recommendations.value = dataRec.data || []
 })

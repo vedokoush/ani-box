@@ -23,15 +23,15 @@ function scrollRight(refEl: HTMLElement | null) {
 onMounted(async () => {
   const id = route.params.id
 
-  const res = await fetch(`http://localhost:3000/anime/${id}`)
+  const res = await fetch(`http://26.193.141.100:3000/anime/${id}`)
   const data = await res.json()
   anime.value = data.data
 
-  const resCast = await fetch(`http://localhost:3000/anime/${id}/characters`)
+  const resCast = await fetch(`http://26.193.141.100:3000/anime/${id}/characters`)
   const dataCast = await resCast.json()
   cast.value = dataCast.data
 
-  const resBanner = await fetch(`http://localhost:3000/anime/${id}/banner`)
+  const resBanner = await fetch(`http://26.193.141.100:3000/anime/${id}/banner`)
   const dataBanner = await resBanner.json()
   banner.value = dataBanner.data?.Media?.bannerImage || null
 })
