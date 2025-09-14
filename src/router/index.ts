@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../pages/home.vue'
 import AnimeDetail from '../pages/AnimeDetail.vue'
-import Search from '../pages/Search.vue'
+import Search from '../pages/search.vue'
 
 const routes = [
   {

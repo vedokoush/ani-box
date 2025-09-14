@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const results = ref<any[]>([])
-const sortBy = ref<'default' | 'rank' | 'favorites' | 'members'>('default')
+const sortBy = ref<'default' | 'rank' | 'favorites' | 'members'>('rank')
 
 function matchesQuery(anime: any, q: string) {
   if (!q) return true
@@ -72,7 +72,7 @@ onMounted(() => {
         class="anime-card"
       >
         <router-link :to="`/anime/${anime.mal_id}`">
-          <img :src="anime.images.jpg.image_url" :alt="anime.title" />
+          <img :src="anime.images.jpg.large_image_url" :alt="anime.title" />
           <h3>{{ anime.title_english || anime.title }}</h3>
           <p>
             Rank: {{ anime.rank ?? 'N/A' }} |
