@@ -119,7 +119,7 @@ onMounted(async () => {
 <style scoped>
 
 .cast-wrapper {
-  width: 80%;
+  width: 100%;
   overflow-x: hidden;
   padding: 0 20px;
 }
@@ -353,5 +353,17 @@ onMounted(async () => {
 }
 .scroll-btn.right {
   right: -20px;
+}
+
+@media (min-width: 1920px) {
+  .cast-wrapper {
+    max-width: 1400px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .cast-wrapper {
+    max-width: 2000px;
+  }
 }
 </style>
