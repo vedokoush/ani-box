@@ -26,6 +26,7 @@ function scrollRight(refEl: HTMLElement | null) {
 
 onMounted(async () => {
   const id = route.params.id as string | number
+
   anime.value = await getAnimeById(id);
   cast.value = await getCast(id);
   banner.value = await getAnimeBanner(id);

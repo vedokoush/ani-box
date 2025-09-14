@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { rec } from '@/apis/handlers/recommendations.ts'
 
 const route = useRoute()
 const recommendations = ref<any[]>([])
@@ -8,9 +9,7 @@ const recListRef = ref<HTMLElement | null>(null)
 
 onMounted(async () => {
   const id = route.params.id
-  const resRec = await fetch(`http://localhost:3000/anime/${id}/recommendations`)
-  const dataRec = await resRec.json()
-  recommendations.value = dataRec.data || []
+  recommendations.value = await rec(id)
 })
 
 function scrollLeft(refEl: HTMLElement | null) {
@@ -49,11 +48,13 @@ function scrollRight(refEl: HTMLElement | null) {
 
 <style scoped>
 .more-like-this {
-  max-width: 1800px;
+  width: 100%;
+  max-width: 1400px;
   margin: 40px auto;
   padding: 0 20px;
   color: white;
 }
+
 
 .more-like-this h2 {
   margin-bottom: 16px;
@@ -141,4 +142,17 @@ function scrollRight(refEl: HTMLElement | null) {
 .scroll-btn.right {
   right: 0;
 }
+
+@media (min-width: 1920px) {
+  .more-like-this {
+    max-width: 1800px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .more-like-this {
+    max-width: 2460px;
+  }
+}
+
 </style>
