@@ -87,6 +87,7 @@ watch(
         <option value="members">Members</option>
       </select>
     </div>
+
     <div v-if="sortedResults().length">
       <div
         v-for="anime in sortedResults()"
