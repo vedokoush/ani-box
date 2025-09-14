@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -18,15 +18,31 @@ function matchesQuery(anime: any, q: string) {
 }
 
 async function fetchSearch(q: string) {
+  if (!q) return
+  results.value = []
+  const API_BASE = "http://localhost:3000/anime/search"
+  const rawResults: any[] = []
+
   try {
-    const res = await fetch(
-      `http://localhost:3000/anime/search?q=${encodeURIComponent(q)}`
-    )
-    const data = await res.json()
-    const rawResults = data.data || []
-    results.value = rawResults.filter((anime: any) => matchesQuery(anime, q))
+
+    const resFull = await fetch(`${API_BASE}?q=${encodeURIComponent(q)}`)
+    const dataFull = await resFull.json()
+    rawResults.push(...(dataFull?.data || []))
+
+    if (!rawResults.length) {
+      const words = q.split(/\s+/)
+      for (const word of words) {
+        const res = await fetch(`${API_BASE}?q=${encodeURIComponent(word)}`)
+        const data = await res.json()
+        rawResults.push(...(data?.data || []))
+      }
+    }
+
+    const uniqueResults = Array.from(new Map(rawResults.map(a => [a.mal_id, a])).values())
+
+    results.value = uniqueResults.filter((anime: any) => matchesQuery(anime, q))
   } catch (err) {
-    console.error('Search error:', err)
+    console.error("Search error:", err)
     results.value = []
   }
 }
@@ -49,6 +65,13 @@ onMounted(() => {
     fetchSearch(route.query.q as string)
   }
 })
+
+watch(
+  () => route.query.q,
+  (newQ) => {
+    if (newQ) fetchSearch(newQ as string)
+  }
+)
 </script>
 
 <template>
@@ -64,7 +87,6 @@ onMounted(() => {
         <option value="members">Members</option>
       </select>
     </div>
-
     <div v-if="sortedResults().length">
       <div
         v-for="anime in sortedResults()"
@@ -85,3 +107,17 @@ onMounted(() => {
     <p v-else>No results found</p>
   </div>
 </template>
+
+
+<style scoped>
+.page-container {
+  padding: 20px;
+  color: white;
+}
+.anime-card {
+  margin: 10px 0;
+}
+.sort-bar {
+  margin: 10px 0;
+}
+</style>

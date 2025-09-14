@@ -1,25 +1,14 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { getSeasonAnime } from '@/apis/handlers/getSeasonAnime.ts'
+import { getTopAnime } from '@/apis/handlers/getTopAnime.ts'
 
 const airingAnimes = ref<any[]>([])
 const topAnimes = ref<any[]>([])
 
-
-async function fetchAiring() {
-  const res = await fetch("http://localhost:3000/anime/now")
-  const data = await res.json()
-  airingAnimes.value = data.data
-}
-
-async function fetchTop() {
-  const res = await fetch("http://localhost:3000/top/anime")
-  const data = await res.json()
-  topAnimes.value = data.data
-}
-
-onMounted(() => {
-  fetchAiring()
-  fetchTop()
+onMounted(async () => {
+  airingAnimes.value = await getSeasonAnime()
+  topAnimes.value = await getTopAnime()
 })
 
 const airingListRef = ref<HTMLElement | null>(null)

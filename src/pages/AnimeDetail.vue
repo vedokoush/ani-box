@@ -2,11 +2,15 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import Recommendation from '@/components/recommendation.vue'
+import { getAnimeById } from '@/apis/handlers/getAnimeById.ts'
+import { getCast } from '@/apis/handlers/getCast.ts'
+import { getAnimeBanner } from '@/apis/handlers/getAnimeBanner.ts'
 import Relations from '@/components/relations.vue'
 
 const route = useRoute()
 const anime = ref<any>(null)
 const cast = ref<any[]>([])
+
 const banner = ref<string | null>(null)
 
 const castListRef = ref<HTMLElement | null>(null)
@@ -21,19 +25,10 @@ function scrollRight(refEl: HTMLElement | null) {
 // const recommendations = ref<any[]>([])
 
 onMounted(async () => {
-  const id = route.params.id
-
-  const res = await fetch(`http://26.193.141.100:3000/anime/${id}`)
-  const data = await res.json()
-  anime.value = data.data
-
-  const resCast = await fetch(`http://26.193.141.100:3000/anime/${id}/characters`)
-  const dataCast = await resCast.json()
-  cast.value = dataCast.data
-
-  const resBanner = await fetch(`http://26.193.141.100:3000/anime/${id}/banner`)
-  const dataBanner = await resBanner.json()
-  banner.value = dataBanner.data?.Media?.bannerImage || null
+  const id = route.params.id as string | number
+  anime.value = await getAnimeById(id);
+  cast.value = await getCast(id);
+  banner.value = await getAnimeBanner(id);
 })
 </script>
 
