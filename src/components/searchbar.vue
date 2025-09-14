@@ -1,5 +1,16 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+const query = ref('')
+
+function onSearch() {
+  if (!query.value.trim()) return
+  router.push(`/search?q=${query.value}`).then(() => {
+    window.location.reload()
+  })
+}
 
 onMounted(() => {
   const box = document.querySelector('.search-box') as HTMLElement | null
@@ -21,7 +32,12 @@ onMounted(() => {
 <template>
   <div class="search-box">
     <a href="#" class="btn-search"><i class="uil uil-search"></i></a>
-    <input type="text" placeholder="Search anime..." />
+    <input
+      v-model="query"
+      type="text"
+      placeholder="Search anime..."
+      @keyup.enter="onSearch"
+    />
     <a href="#" class="btn-close"><i class="uil uil-times"></i></a>
   </div>
 </template>
