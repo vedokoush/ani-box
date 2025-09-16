@@ -157,6 +157,36 @@ func getAnimeRelations(r *gin.Engine) {
 	})
 }
 
+func searchTraceMoe(r *gin.Engine) {
+	r.GET("/trace", func(c *gin.Context) {
+		imageURL := c.Query("url")
+		if imageURL == "" {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "missing url"})
+			return
+		}
+
+		anilistID := c.Query("anilistID")
+
+		// gọi trace.moe
+		apiURL := "https://api.trace.moe/search?url=" + imageURL
+		if anilistID != "" {
+			apiURL += "&anilistID=" + anilistID
+		}
+
+		resp, err := http.Get(apiURL)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+		defer resp.Body.Close()
+
+		body, _ := io.ReadAll(resp.Body)
+		c.Data(http.StatusOK, "application/json", body)
+	})
+}
+
+
+
 func main() {
 	r := gin.Default()
 	r.Use(cors.Default())
@@ -168,8 +198,9 @@ func main() {
 	getAnimeCharacters(r)
 	getAnimeBanner(r)
 	searchAnime(r)
-	getAnimeRecommendations(r);
-	getAnimeRelations(r);
+	getAnimeRecommendations(r)
+	getAnimeRelations(r)
+	searchTraceMoe(r)
 
 	r.Run(":3000")
 }
