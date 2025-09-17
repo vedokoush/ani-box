@@ -57,6 +57,7 @@ const router = useRouter()
 
 .links {
   display: flex;
+  font-weight: 100;
   align-items: center;
   gap: 1.5rem;
 }

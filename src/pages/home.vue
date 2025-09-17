@@ -196,25 +196,27 @@ onMounted(async () => {
       </div>
 
       <div class="scroll-container" v-if="topAnimes.length">
-        <div class="anime-list" ref="topListRef">
-          <router-link
-            v-for="anime in topAnimes"
-            :key="anime.mal_id"
-            :to="`/anime/${anime.mal_id}`"
-            class="anime-card"
-          >
-            <div class="card-image">
-              <img :src="anime.images.jpg.large_image_url" :alt="anime.title_english || anime.title" loading="lazy" />
-              <div class="card-overlay">
-                <div class="play-icon">▶</div>
+        <div class="top-anime">
+          <div class="anime-list" ref="topListRef">
+            <router-link
+              v-for="anime in topAnimes"
+              :key="anime.mal_id"
+              :to="`/anime/${anime.mal_id}`"
+              class="anime-card"
+            >
+              <div class="card-image">
+                <img :src="anime.images.jpg.large_image_url" :alt="anime.title_english || anime.title" loading="lazy" />
+                <div class="card-overlay">
+                  <div class="play-icon">▶</div>
+                </div>
+                <div class="score-indicator">⭐ {{ anime.score }}</div>
               </div>
-              <div class="score-indicator">⭐ {{ anime.score }}</div>
-            </div>
-            <div class="card-info">
-              <h3>{{ anime.title_english || anime.title }}</h3>
-              <p class="anime-score">Score: {{ anime.score }}/10</p>
-            </div>
-          </router-link>
+              <div class="card-info">
+                <h3>{{ anime.title_english || anime.title }}</h3>
+                <p class="anime-score">Score: {{ anime.score }}/10</p>
+              </div>
+            </router-link>
+          </div>
         </div>
       </div>
 
@@ -229,10 +231,13 @@ onMounted(async () => {
 <style scoped>
 .page-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
   color: white;
   max-width: 100vw;
   overflow-x: hidden;
+}
+
+.top-anime {
+  background: #e0e0e0;
 }
 
 .hero-banner {
@@ -265,10 +270,11 @@ onMounted(async () => {
   width: 100%;
   height: 100%;
   background: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.4) 50%,
-    rgba(0, 0, 0, 0.7) 100%
+    to bottom,
+    rgba(3,14,22,0) 0%,
+    rgba(3,14,22,0.6) 40%,
+    rgba(3,14,22,0.9) 80%,
+    rgba(3,14,22,1) 100%
   );
 }
 
@@ -283,7 +289,10 @@ onMounted(async () => {
 }
 
 .hero-info {
-  max-width: 600px;
+  max-width: 1200px;
+  padding-top: 400px;
+  padding-left: 50px;
+
 }
 
 .hero-title {
@@ -407,7 +416,8 @@ onMounted(async () => {
 .slide-indicators {
   position: absolute;
   bottom: 30px;
-  left: 60px;
+  padding-top: 100px;
+  left: 120px;
   z-index: 3;
   display: flex;
   gap: 12px;
@@ -546,7 +556,7 @@ onMounted(async () => {
 
 .card-image {
   position: relative;
-  border-radius: 15px;
+  //border-radius: 15px;
   overflow: hidden;
   margin-bottom: 15px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -554,7 +564,7 @@ onMounted(async () => {
 
 .card-image img {
   width: 100%;
-  height: 350px;
+  height: 100%;
   object-fit: cover;
   transition: all 0.4s ease;
 }

@@ -62,7 +62,7 @@ export function useFeaturedSlider(featuredAnimes: Ref<Anime[]>) {
   const truncatedSynopsis = computed(() => {
     const anime = featuredAnimes.value[currentFeaturedIndex.value]
     if (!anime?.synopsis) return ''
-    return anime.synopsis.length > 300
+    return anime.synopsis.length > 400
       ? anime.synopsis.substring(0, 300) + '...'
       : anime.synopsis
   })
