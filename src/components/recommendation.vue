@@ -37,6 +37,7 @@ function scrollRight(refEl: HTMLElement | null) {
             :src="rec.entry.images.jpg.large_image_url"
             :alt="rec.entry.title"
             class="recommend-img"
+            loading="lazy"
           />
           <p class="recommend-title">{{ rec.entry.title }}</p>
         </router-link>

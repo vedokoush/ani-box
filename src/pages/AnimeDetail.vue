@@ -41,7 +41,7 @@ onMounted(async () => {
 
     <div v-if="anime" class="anime-card">
       <div class="anime-card-left">
-        <img :src="anime.images.jpg.large_image_url" :alt="anime.title" class="anime-poster"/>
+        <img :src="anime.images.jpg.large_image_url" :alt="anime.title" class="anime-poster" loading="lazy"/>
       </div>
 
       <div class="anime-card-right">
@@ -85,11 +85,13 @@ onMounted(async () => {
                           :src="c.character.images.jpg.image_url"
                           :alt="c.character.name"
                           class="character-img"
+                          loading="lazy"
                         />
                         <img
                           :src="c.voice_actors[0]?.person.images.jpg.image_url"
                           :alt="c.voice_actors[0]?.person.name"
                           class="voice-img"
+                          loading="lazy"
                         />
                       </div>
                       <p class="cast-name">

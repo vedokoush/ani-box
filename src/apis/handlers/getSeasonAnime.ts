@@ -1,7 +1,19 @@
 import { BASE_URL} from '@/urls/base_url.ts'
 
+const cache = new Map<string, any>()
+
 export async function getSeasonAnime() {
-  const res = await fetch(`${BASE_URL}/anime/now`)
-  const data = await res.json()
-  return data.data
+  const url = `${BASE_URL}/anime/now`
+  if (cache.has(url)) return cache.get(url)
+
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 10000)
+  try {
+    const res = await fetch(url, { signal: controller.signal })
+    const data = await res.json()
+    cache.set(url, data.data)
+    return data.data
+  } finally {
+    clearTimeout(timeout)
+  }
 }
