@@ -112,6 +112,7 @@ onMounted(async () => {
               class="btn-primary"
             >
               Learn More
+
             </router-link>
             <button class="btn-secondary">Add to List</button>
           </div>
