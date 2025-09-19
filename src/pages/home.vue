@@ -32,15 +32,12 @@ const {
   goToSlide,
   displayTitle,
   truncatedSynopsis,
-  currentAnime
+  currentAnime,
 } = useFeaturedSlider(featuredAnimes)
 
 onMounted(async () => {
   try {
-    const [airingData, topData] = await Promise.all([
-      getSeasonAnime(),
-      getTopAnime()
-    ])
+    const [airingData, topData] = await Promise.all([getSeasonAnime(), getTopAnime()])
 
     airingAnimes.value = airingData.slice(0, 20)
     topAnimes.value = topData.slice(0, 20)
@@ -67,7 +64,7 @@ onMounted(async () => {
           :src="featuredBanner"
           :alt="displayTitle"
           class="banner-image"
-          :class="{ 'transitioning': isTransitioning }"
+          :class="{ transitioning: isTransitioning }"
         />
         <div class="hero-overlay"></div>
       </div>
@@ -79,7 +76,13 @@ onMounted(async () => {
         @mouseleave="startAutoSlide"
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path
+            d="M15 18L9 12L15 6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
         </svg>
       </button>
 
@@ -90,30 +93,41 @@ onMounted(async () => {
         @mouseleave="startAutoSlide"
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path
+            d="M9 18L15 12L9 6"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
         </svg>
       </button>
 
-      <div class="hero-content" :class="{ 'transitioning': isTransitioning }">
+      <div class="hero-content" :class="{ transitioning: isTransitioning }">
         <div class="hero-info">
           <h1 class="hero-title">{{ displayTitle }}</h1>
 
           <div class="hero-meta">
             <span class="rating-badge" v-if="currentAnime?.rating">{{ currentAnime.rating }}</span>
             <span class="score-badge" v-if="currentAnime?.score">⭐ {{ currentAnime.score }}</span>
-            <span class="episode-badge" v-if="currentAnime?.episodes">{{ currentAnime.episodes }} Episodes</span>
+            <span class="episode-badge" v-if="currentAnime?.episodes"
+              >{{ currentAnime.episodes }} Episodes</span
+            >
           </div>
 
           <p class="hero-description">{{ truncatedSynopsis }}</p>
 
           <div class="hero-actions">
+
             <router-link
-              :to="`/anime/${currentAnime?.mal_id}`"
+              v-if="currentAnime"
+              :to="`/anime/${currentAnime.mal_id}`"
               class="btn-primary"
             >
-              Learn More
-
+              Watch Now
             </router-link>
+
+
             <button class="btn-secondary">Add to List</button>
           </div>
         </div>
@@ -124,7 +138,7 @@ onMounted(async () => {
           v-for="(anime, index) in featuredAnimes"
           :key="anime.mal_id"
           class="indicator"
-          :class="{ 'active': index === currentFeaturedIndex }"
+          :class="{ active: index === currentFeaturedIndex }"
           @click="goToSlide(index)"
           @mouseenter="stopAutoSlide"
           @mouseleave="startAutoSlide"
@@ -140,12 +154,24 @@ onMounted(async () => {
         <div class="navigation-arrows">
           <button class="nav-arrow" @click="scrollLeft(airingListRef)">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path
+                d="M15 18L9 12L15 6"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
           <button class="nav-arrow" @click="scrollRight(airingListRef)">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path
+                d="M9 18L15 12L9 6"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
         </div>
@@ -160,7 +186,11 @@ onMounted(async () => {
             class="anime-card"
           >
             <div class="card-image">
-              <img :src="anime.images.jpg.large_image_url" :alt="anime.title_english || anime.title" loading="lazy" />
+              <img
+                :src="anime.images.jpg.large_image_url"
+                :alt="anime.title_english || anime.title"
+                loading="lazy"
+              />
               <div class="card-overlay">
                 <div class="play-icon">▶</div>
               </div>
@@ -185,39 +215,53 @@ onMounted(async () => {
         <div class="navigation-arrows">
           <button class="nav-arrow" @click="scrollLeft(topListRef)">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path
+                d="M15 18L9 12L15 6"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
           <button class="nav-arrow" @click="scrollRight(topListRef)">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path
+                d="M9 18L15 12L9 6"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </button>
         </div>
       </div>
 
       <div class="scroll-container" v-if="topAnimes.length">
-        <div class="top-anime">
-          <div class="anime-list" ref="topListRef">
-            <router-link
-              v-for="anime in topAnimes"
-              :key="anime.mal_id"
-              :to="`/anime/${anime.mal_id}`"
-              class="anime-card"
-            >
-              <div class="card-image">
-                <img :src="anime.images.jpg.large_image_url" :alt="anime.title_english || anime.title" loading="lazy" />
-                <div class="card-overlay">
-                  <div class="play-icon">▶</div>
-                </div>
-                <div class="score-indicator">⭐ {{ anime.score }}</div>
+        <div class="anime-list" ref="topListRef">
+          <router-link
+            v-for="anime in topAnimes"
+            :key="anime.mal_id"
+            :to="`/anime/${anime.mal_id}`"
+            class="anime-card"
+          >
+            <div class="card-image">
+              <img
+                :src="anime.images.jpg.large_image_url"
+                :alt="anime.title_english || anime.title"
+                loading="lazy"
+              />
+              <div class="card-overlay">
+                <div class="play-icon">▶</div>
               </div>
-              <div class="card-info">
-                <h3>{{ anime.title_english || anime.title }}</h3>
-                <p class="anime-score">Score: {{ anime.score }}/10</p>
-              </div>
-            </router-link>
-          </div>
+              <div class="score-indicator">⭐ {{ anime.score }}</div>
+            </div>
+            <div class="card-info">
+              <h3>{{ anime.title_english || anime.title }}</h3>
+              <p class="anime-score">Score: {{ anime.score }}/10</p>
+            </div>
+          </router-link>
         </div>
       </div>
 
@@ -266,22 +310,23 @@ onMounted(async () => {
 
 .hero-overlay {
   position: absolute;
+  z-index: 1;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: linear-gradient(
     to bottom,
-    rgba(3,14,22,0) 0%,
-    rgba(3,14,22,0.6) 40%,
-    rgba(3,14,22,0.9) 80%,
-    rgba(3,14,22,1) 100%
+    rgba(3, 14, 22, 0) 0%,
+    rgba(3, 14, 22, 0.6) 40%,
+    rgba(3, 14, 22, 0.9) 80%,
+    rgba(3, 14, 22, 1) 100%
   );
 }
 
 .hero-content {
   position: relative;
-  z-index: 2;
+  z-index: 5;
   height: 100%;
   display: flex;
   align-items: center;
@@ -293,7 +338,6 @@ onMounted(async () => {
   max-width: 1200px;
   padding-top: 400px;
   padding-left: 50px;
-
 }
 
 .hero-title {
@@ -624,7 +668,6 @@ onMounted(async () => {
   margin: 0;
 }
 
-
 .loading-state {
   display: flex;
   flex-direction: column;
@@ -645,8 +688,12 @@ onMounted(async () => {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 1200px) {
@@ -744,7 +791,5 @@ onMounted(async () => {
   }
 }
 </style>
-
-
 
 <!-- shouko -->

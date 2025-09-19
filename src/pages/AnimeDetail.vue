@@ -188,7 +188,7 @@ onMounted(async () => {
 
 .anime-poster {
   width: 100%;
-  max-width: 420px;
+  max-width: 460px;
   border-radius: 4px;
   object-fit: cover;
 }
@@ -201,7 +201,7 @@ onMounted(async () => {
 }
 
 .anime-title {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: bold;
   margin-bottom: 10px;
 }
@@ -236,21 +236,35 @@ onMounted(async () => {
   background: #ff1b75;
   color: white;
   border: none;
-  padding: 12px 30px;
+  font-size: 1rem;
+  padding: 15px 30px;
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.watch-btn:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 
 .add-to-list {
   background: #f2d5cf;
   color: #030e16;
   border: none;
-  padding: 12px 30px;
+  font-size: 1rem;
+  padding: 15px 30px;
   border-radius: 4px;
   cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
+
+.add-to-list:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
 .scroll-container {
   position: relative;
   display: flex;

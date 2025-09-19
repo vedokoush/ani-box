@@ -86,7 +86,7 @@ function scrollRight(refEl: HTMLElement | null) {
 
 .recommend-item {
   flex: 0 0 auto;
-  width: 220px;
+  width: 300px;
   color: white;
   padding: 10px;
   border-radius: 8px;
@@ -99,8 +99,8 @@ function scrollRight(refEl: HTMLElement | null) {
 }
 
 .recommend-img {
-  width: 100%;
-  height: 300px;
+  width: auto;
+  height: 400px;
   object-fit: cover;
   border-radius: 6px;
 }
